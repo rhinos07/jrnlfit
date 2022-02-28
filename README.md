@@ -17,6 +17,8 @@ Than you could use just
 
 
 ## Create or update the entry of today or yesterday
+The script checks if a text file for the entry existis in the working folder. Then either creates the entry or appends the new text to that existing file.
+
 `jrnlfit today: This day was a very good day.`
 
 `jrnlfit yesterday: Yesterday was very interesting day`
