@@ -136,6 +136,16 @@ def print_entry(date_value):
         print('\033[95m' + date_value.strftime("%A, %d. %B %Y") + " \t--- no entry ---")
         print("\033[97m")
 
+def test_parse_date():
+    # Arrange
+    date_string = "2022-01-01"
+    expected_date = date(2022, 1, 1)
+
+    # Act
+    parsed_date = parse_date(date_string)
+
+    # Assert
+    assert parsed_date == expected_date
 
 if __name__ == "__main__":
     main()
