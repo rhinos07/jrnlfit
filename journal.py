@@ -67,16 +67,16 @@ def create_or_udate(entrydate, text):
     None
     """
     filename = entrydate.strftime("%Y-%m-%d") + ".txt"
-    file1 = open(filename,"a",  encoding="utf-8")
-    current_size = file1.tell()
-    if current_size == 0:
-        file1.write(entrydate.strftime("%A, %d. %B %Y") + str('\n'))
-    file1.write(str(text) + str('\n'))
-    file1.close()
-    if current_size == 0:
-        print("[new file created]")
-    else:
-        print("[new text appended]")
+    with open(filename,"a",  encoding="utf-8") as file1:
+        current_size = file1.tell()
+        if current_size == 0:
+            file1.write(entrydate.strftime("%A, %d. %B %Y") + str('\n'))
+        file1.write(str(text) + str('\n'))
+        file1.close()
+        if current_size == 0:
+            print("[new file created]")
+        else:
+            print("[new text appended]")
 
 
 
@@ -93,7 +93,7 @@ def parse_date(date_argument):
     """
     if date_argument == 'today:':
         return date.today()
-  
+
     if date_argument == 'yesterday:':
         return date.today() - timedelta(days=1)
 
