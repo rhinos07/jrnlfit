@@ -1,10 +1,26 @@
+"""
+This module contains the main functionality for a journal application. 
+
+It provides a command-line interface for creating and updating journal entries. 
+Entries can be created for the current date or for a specified date. 
+The module also supports viewing the last 'n' entries.
+
+Functions:
+    main(args=None): The main entry point for the journal application.
+    create_or_update(entrydate, text): Creates or updates a journal entry.
+"""
 import locale
-from operator import contains
 import sys
 from datetime import date, timedelta
 
-
 def main(args=None):
+    """
+    This function is the main entry point for the journal application. It takes an optional list of arguments
+    and processes them accordingly. If no arguments are provided, it prints a message and returns. If the first
+    argument starts with a hyphen, it expects a count to follow and prints the last entries from the journal.
+    If the first argument ends with a colon, it expects a date to follow and creates or updates an entry for that date.
+    Otherwise, it creates or updates an entry for today's date with the provided arguments.
+    """
     locale.setlocale(locale.LC_ALL, "")
     if args is None:
         args = sys.argv[1:]
@@ -21,20 +37,30 @@ def main(args=None):
             count = args[0][1:]
 
 
-        if (count.isdigit()== False):
+        if (not count.isdigit()):
             return
-        printLastEntries(count)
+        print_last_entries(count)
         return
 
     entrydate = date.today()
     if (len(args) > 0 and args[0].endswith(':')):
-        entrydate = parseDate(args[0])
+        entrydate = parse_date(args[0])
         args = args[1:]
 
-    createOrUpdate(entrydate, ' '.join(args))
+    create_or_udate(entrydate, ' '.join(args))
 
 
-def createOrUpdate(entrydate, text):
+def create_or_udate(entrydate, text):
+    """
+    Creates a new file or updates an existing file with the given text for the given entry date.
+
+    Args:
+    entrydate (datetime): The date of the journal entry.
+    text (str): The text to be added to the journal entry.
+
+    Returns:
+    None
+    """
     filename = entrydate.strftime("%Y-%m-%d") + ".txt"
     file1 = open(filename,"a",  encoding="utf-8")
     current_size = file1.tell()
@@ -47,31 +73,62 @@ def createOrUpdate(entrydate, text):
     else:
         print("[new text appended]")
 
-def parseDate(dateArgument):
-    if (dateArgument == 'today:'):
+
+
+def parse_date(date_argument):
+    """
+    Parses a date argument and returns a corresponding date object.
+
+    Args:
+        dateArgument (str): A string representing a date. Can be in the format 'YYYY-MM-DD' or 'today:' or 'yesterday:'.
+
+    Returns:
+        date: A date object corresponding to the input date string.
+    """
+    if (date_argument == 'today:'):
         return date.today()
     
-    if (dateArgument == 'yesterday:'):
+    if (date_argument == 'yesterday:'):
         return date.today() - timedelta(days=1)
 
-    return date.fromisoformat(dateArgument[:-1])
+    return date.fromisoformat(date_argument[:-1])
     
-def printLastEntries(count):
-    if (count.isdigit()== False):
+
+
+def print_last_entries(count):
+    """
+    Prints the last `count` number of entries in the journal.
+
+    Args:
+        count (int): The number of entries to print.
+
+    Returns:
+        None
+    """
+    if (not count.isdigit()):
         return
     for x in range(0,int(count))[::-1]:
-        printEntry(date.today() - timedelta(x))
+        print_entry(date.today() - timedelta(x))
     print("\033[39m")
 
 
-def printEntry(date):
-    filename = date.strftime("%Y-%m-%d") + ".txt"
+def print_entry(date_value):
+    """
+    Prints the contents of a journal entry for the given date.
+
+    Args:
+        date_value (datetime.date): The date of the journal entry to print.
+
+    Returns:
+        None
+    """
+    filename = date_value.strftime("%Y-%m-%d") + ".txt"
 
     try:
         with open(filename, 'r', encoding="utf-8") as fin:
             print('\033[93m' + fin.read())
     except IOError:
-        print('\033[95m' + date.strftime("%A, %d. %B %Y") + " \t--- no entry ---")
+        print('\033[95m' + date_value.strftime("%A, %d. %B %Y") + " \t--- no entry ---")
         print("\033[97m")
 
 
