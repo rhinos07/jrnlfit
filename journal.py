@@ -15,10 +15,14 @@ from datetime import date, timedelta
 
 def main(args=None):
     """
-    This function is the main entry point for the journal application. It takes an optional list of arguments
-    and processes them accordingly. If no arguments are provided, it prints a message and returns. If the first
-    argument starts with a hyphen, it expects a count to follow and prints the last entries from the journal.
-    If the first argument ends with a colon, it expects a date to follow and creates or updates an entry for that date.
+    This function is the main entry point for the journal application. 
+    It takes an optional list of arguments
+    and processes them accordingly. If no arguments are provided, 
+    it prints a message and returns. If the first
+    argument starts with a hyphen, it expects a count to follow and 
+    prints the last entries from the journal.
+    If the first argument ends with a colon, it expects a date to 
+    follow and creates or updates an entry for that date.
     Otherwise, it creates or updates an entry for today's date with the provided arguments.
     """
     locale.setlocale(locale.LC_ALL, "")
@@ -52,7 +56,8 @@ def main(args=None):
 
 def create_or_udate(entrydate, text):
     """
-    Creates a new file or updates an existing file with the given text for the given entry date.
+    Creates a new file or updates an existing file with the given text 
+    for the given entry date.
 
     Args:
     entrydate (datetime): The date of the journal entry.
@@ -64,7 +69,7 @@ def create_or_udate(entrydate, text):
     filename = entrydate.strftime("%Y-%m-%d") + ".txt"
     file1 = open(filename,"a",  encoding="utf-8")
     current_size = file1.tell()
-    if(current_size == 0):
+    if current_size == 0:
         file1.write(entrydate.strftime("%A, %d. %B %Y") + str('\n'))
     file1.write(str(text) + str('\n'))
     file1.close()
@@ -80,19 +85,19 @@ def parse_date(date_argument):
     Parses a date argument and returns a corresponding date object.
 
     Args:
-        dateArgument (str): A string representing a date. Can be in the format 'YYYY-MM-DD' or 'today:' or 'yesterday:'.
+        dateArgument (str): A string representing a date. 
+        Can be in the format 'YYYY-MM-DD' or 'today:' or 'yesterday:'.
 
     Returns:
         date: A date object corresponding to the input date string.
     """
     if date_argument == 'today:':
         return date.today()
-    
+  
     if date_argument == 'yesterday:':
         return date.today() - timedelta(days=1)
 
     return date.fromisoformat(date_argument[:-1])
-    
 
 
 def print_last_entries(count):
