@@ -25,25 +25,25 @@ def main(args=None):
     if args is None:
         args = sys.argv[1:]
 
-    if (len(args) == 0):
+    if len(args) == 0:
         print("nothing done")
         return
 
-    if (len(args) > 0 and args[0].startswith('-')):
+    if len(args) > 0 and args[0].startswith('-'):
         count = "10"
-        if (args[0] == '-n'):
+        if args[0] == '-n':
             count = args[1]
         else:
             count = args[0][1:]
 
 
-        if (not count.isdigit()):
+        if not count.isdigit():
             return
         print_last_entries(count)
         return
 
     entrydate = date.today()
-    if (len(args) > 0 and args[0].endswith(':')):
+    if len(args) > 0 and args[0].endswith(':'):
         entrydate = parse_date(args[0])
         args = args[1:]
 
@@ -68,7 +68,7 @@ def create_or_udate(entrydate, text):
         file1.write(entrydate.strftime("%A, %d. %B %Y") + str('\n'))
     file1.write(str(text) + str('\n'))
     file1.close()
-    if(current_size == 0):
+    if current_size == 0:
         print("[new file created]")
     else:
         print("[new text appended]")
@@ -85,10 +85,10 @@ def parse_date(date_argument):
     Returns:
         date: A date object corresponding to the input date string.
     """
-    if (date_argument == 'today:'):
+    if date_argument == 'today:':
         return date.today()
     
-    if (date_argument == 'yesterday:'):
+    if date_argument == 'yesterday:':
         return date.today() - timedelta(days=1)
 
     return date.fromisoformat(date_argument[:-1])
@@ -105,7 +105,7 @@ def print_last_entries(count):
     Returns:
         None
     """
-    if (not count.isdigit()):
+    if not count.isdigit():
         return
     for x in range(0,int(count))[::-1]:
         print_entry(date.today() - timedelta(x))
